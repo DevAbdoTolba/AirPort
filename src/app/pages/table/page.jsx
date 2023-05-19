@@ -5,8 +5,13 @@ import Header from "../../components/Header";
 import { useSearchParams } from "next/navigation";
 
 import { DataGrid } from "@mui/x-data-grid";
+import { Button } from "@mui/material";
 
-const columns = [
+const handleRowUpdate = (row) => {
+  console.log(row);
+};
+
+let columnsGet = [
   { field: "id", headerName: "ID", width: 90 },
   {
     field: "firstName",
@@ -25,7 +30,7 @@ const columns = [
     headerName: "Age",
     type: "number",
     width: 110,
-    editable: true,
+    editable: false,
   },
   {
     field: "fullName",
@@ -35,6 +40,19 @@ const columns = [
     width: 160,
     valueGetter: (params) =>
       `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+  },
+];
+
+const columns = [
+  ...columnsGet,
+  { field: "empty", headerName: "", width: 300 },
+  {
+    field: "update",
+    headerName: "",
+    width: 120,
+    renderCell: (params) => (
+      <Button onClick={() => handleRowUpdate(params.row)}>Update</Button>
+    ),
   },
 ];
 

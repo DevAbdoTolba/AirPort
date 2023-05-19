@@ -6,13 +6,17 @@ import Header from "../../../components/Header";
 import {
   Box,
   Button,
-  Checkbox,
   FormControlLabel,
   FormGroup,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
+
+import Checkbox from "@mui/joy/Checkbox";
+import List from "@mui/joy/List";
+import ListItem from "@mui/joy/ListItem";
+import ListItemDecorator from "@mui/joy/ListItemDecorator";
 export default function Page({ params }) {
   const { entity } = params;
   const attr = ["id", "first_name", "last_name", "email"];
@@ -20,7 +24,15 @@ export default function Page({ params }) {
 
   const [items, setItems] = useState([]);
 
-  const handleCheckboxChange = (event) => {
+  const [value, setValue] = React.useState([]);
+
+  const handleCheckboxChange = (event, item) => {
+    if (event.target.checked) {
+      setValue((val) => [...val, item]);
+    } else {
+      setValue((val) => val.filter((text) => text !== item));
+    }
+
     const { checked, value } = event.target;
     if (checked) {
       setItems((prevItems) => [...prevItems, value]);
@@ -86,35 +98,59 @@ export default function Page({ params }) {
               <Typography variant="h3" component="div">
                 {entity}
               </Typography>
-              <Paper elevation={1}>
-                <FormGroup
+              <Box
+                sx={{
+                  padding: "1rem",
+                  marginTop: "1rem",
+                  maxWidth: "80vw",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <List
+                  variant="outlined"
+                  aria-label="Screens"
+                  role="group"
+                  orientation="horizontal"
                   sx={{
-                    padding: "1rem",
-                    marginTop: "1rem",
-                    maxWidth: "80vw",
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexWrap: "wrap",
+                    bgcolor: "background.body",
+                    flexGrow: 0,
+                    "--List-gap": "20px",
+                    "--List-padding": "8px",
+                    "--List-radius": "8px",
                   }}
                 >
-                  {attr.map((item, index) => (
-                    <>
-                      <FormControlLabel
-                        key={index}
-                        control={
-                          <Checkbox
-                            onChange={handleCheckboxChange}
-                            value={item}
-                          />
-                        }
+                  {attr.map((item) => (
+                    <ListItem key={item}>
+                      <Checkbox
+                        disableIcon
+                        overlay
                         label={item}
+                        value={item}
+                        checked={value.includes(item)}
+                        color="neutral"
+                        variant={value.includes(item) ? "outlined" : "plain"}
+                        onChange={(event) => {
+                          handleCheckboxChange(event, item);
+                        }}
+                        slotProps={{
+                          action: ({ checked }) => ({
+                            sx: {
+                              bgcolor: checked
+                                ? "background.level1"
+                                : "transparent",
+                              boxShadow: checked ? "sm" : "none",
+                            },
+                          }),
+                        }}
                       />
-                    </>
+                    </ListItem>
                   ))}
-                </FormGroup>
-              </Paper>
+                </List>
+              </Box>
             </Box>
             <form
               onSubmit={(e) => {

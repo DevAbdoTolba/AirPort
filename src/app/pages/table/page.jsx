@@ -2,6 +2,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Header from "../../components/Header";
+import { useSearchParams } from "next/navigation";
 
 import { DataGrid } from "@mui/x-data-grid";
 
@@ -11,13 +12,13 @@ const columns = [
     field: "firstName",
     headerName: "First name",
     width: 150,
-    editable: true,
+    editable: false,
   },
   {
     field: "lastName",
     headerName: "Last name",
     width: 150,
-    editable: true,
+    editable: false,
   },
   {
     field: "age",
@@ -50,6 +51,19 @@ const rows = [
 ];
 
 export default function DataGridDemo() {
+  const router = useSearchParams();
+  const search = router.get("search");
+  const attr = router.get("attr");
+
+  let attrArray = [];
+  if (attr) {
+    const decodedAttr = decodeURIComponent(attr);
+    attrArray = decodedAttr.split(",");
+  }
+
+  console.log("Search:", search);
+  console.log("Attr Array:", attrArray);
+
   return (
     <>
       <Header title={"Table"} />

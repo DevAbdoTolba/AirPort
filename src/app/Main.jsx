@@ -13,7 +13,7 @@ export default function Main() {
   ];
 
   let hospitality = "Hospitality";
-  let hospitality_list = ["Hosts", "Passengers", "Reservations", "Duty Free"];
+  let hospitality_list = ["Hosts", "Passengers", "Reservations", "DutyFree"];
 
   let human_resources = "Human Resources";
   let human_resources_list = ["Payments", "Dependents", "Employees"];
